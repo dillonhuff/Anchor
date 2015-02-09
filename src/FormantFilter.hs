@@ -2,6 +2,8 @@ module FormantFilter(Formant,
                      formant,
                      applyFormantFilter) where
 
+import Signal
+
 data Formant = Formant {
      frequency :: Double,
      bandwidth :: Double
@@ -10,17 +12,18 @@ data Formant = Formant {
 formant :: Double -> Double -> Formant
 formant = Formant
 
+applyFormantFilter :: Formant -> Signal -> Signal
+applyFormantFilter form sig =
+  let (r, omega) = normedROmega form (samplesPerSecond sig)
+      filteredSamps = recFormantFilter r omega 0.0 0.0 (samples sig) in
+  signal (samplesPerSecond sig) filteredSamps
+
 yt :: Double -> Double -> Double -> Double -> Double -> Double
 yt r omega ut yt1 yt2 =
   let b = (-1)*2*r*cos(omega)
       k = (-1)*r*r
       a = 1 - 2*r*cos(omega) + r*r in
   a*ut + b*yt1 + k*yt2
-
-applyFormantFilter :: Formant -> Int -> [Double] -> [Double]
-applyFormantFilter form sampleRate signal =
-  let (r, omega) = normedROmega form sampleRate in
-  recFormantFilter r omega 0.0 0.0 signal
 
 normedROmega :: Formant -> Int -> (Double, Double)
 normedROmega form sampleRate =
@@ -31,7 +34,7 @@ normedROmega form sampleRate =
 
 recFormantFilter :: Double -> Double -> Double -> Double -> [Double] -> [Double]
 recFormantFilter _ _ _ _ [] = []
-recFormantFilter r omega yt1 yt2 signal =
-  let ut = head signal
+recFormantFilter r omega yt1 yt2 samples =
+  let ut = head samples
       nextYt1 = (yt r omega ut yt1 yt2) in
-  nextYt1 : (recFormantFilter r omega nextYt1 yt1 (tail signal))
+  nextYt1 : (recFormantFilter r omega nextYt1 yt1 (tail samples))

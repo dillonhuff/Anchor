@@ -1,4 +1,4 @@
-module WriteWav() where
+module WriteWav(writeOneChannelWAVEWithDateTime) where
 
 import Data.Int
 import Data.List.Utils
@@ -7,6 +7,10 @@ import Data.WAVE
 import System.IO
 
 import Signal
+
+writeOneChannelWAVEWithDateTime :: String -> Signal -> IO ()
+writeOneChannelWAVEWithDateTime name sig =
+  writeWAVEWithDateTime name $ oneChannelWAVE sig
 
 writeWAVE :: String -> WAVE -> IO ()
 writeWAVE fileName wav = putWAVEFile fileName wav
