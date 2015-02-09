@@ -1,6 +1,7 @@
 module FormantFilter(Formant,
                      formant,
-                     applyFormantFilter) where
+                     applyFormantFilter,
+                     sequentialFormantFilter) where
 
 import Signal
 

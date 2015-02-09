@@ -2,7 +2,8 @@ module Signal(Signal,
               signal,
               samplesPerSecond,
               samples,
-              modifySamples) where
+              modifySamples,
+              sinWave) where
 
 data Signal = Signal {
      samplesPerSecond :: Int,

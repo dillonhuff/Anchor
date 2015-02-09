@@ -7,7 +7,10 @@ import WriteWav
 
 main :: IO ()
 main =
-  let impulseTrain = concat $ replicate 100 [100, 0]
-      impSig = signal 8192 impulseTrain
-      filtSig = sequentialFormantFilter aFormants impSig in
-  writeOneChannelWAVEWithDateTime "AltAFilter" filtSig
+  let impulseTrain = concat $ replicate 100 [10, 0, -10]
+      impSig = signal 4096 impulseTrain
+      filtSigA = sequentialFormantFilter aFormants impSig
+      filtSigU = sequentialFormantFilter uFormants impSig in
+  do
+    writeOneChannelWAVEWithDateTime "ZAFilter" filtSigA
+    writeOneChannelWAVEWithDateTime "ZUFilter" filtSigU
