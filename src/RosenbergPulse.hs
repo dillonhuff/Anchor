@@ -4,9 +4,9 @@ rosenbergPulse :: Int -> Int -> Double -> Double -> [Double]
 rosenbergPulse f0 fs dutyCycle glottalOpenFrac =
   let period = 1.0 / (fromIntegral f0)
       pulseLength = floor $ period * (fromIntegral fs)
-      n2 = floor $ pulseLength * dutyCycle
-      n1 = floor $ glottalOpenFrac * n2 in
-  pulsePhases (floor n1) (floor n2) ((floor pulseLength) - (floor n2))
+      n2 = floor $ (fromIntegral pulseLength) * dutyCycle
+      n1 = floor $ glottalOpenFrac * (fromIntegral n2) in
+  pulsePhases f0 f0 (pulseLength - n2)
 
 pulsePhases :: Int ->
                Int ->
