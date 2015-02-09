@@ -12,6 +12,9 @@ data Formant = Formant {
 formant :: Double -> Double -> Formant
 formant = Formant
 
+sequentialFormantFilter :: [Formant] -> Signal -> Signal
+sequentialFormantFilter formants sig = foldr applyFormantFilter sig formants
+
 applyFormantFilter :: Formant -> Signal -> Signal
 applyFormantFilter form sig =
   let (r, omega) = normedROmega form (samplesPerSecond sig)

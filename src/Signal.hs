@@ -1,7 +1,8 @@
 module Signal(Signal,
               signal,
               samplesPerSecond,
-              samples) where
+              samples,
+              modifySamples) where
 
 data Signal = Signal {
      samplesPerSecond :: Int,
@@ -9,6 +10,9 @@ data Signal = Signal {
   } deriving (Eq, Ord, Show)
 
 signal = Signal
+
+modifySamples :: ([Double] -> [Double]) -> Signal -> Signal
+modifySamples f sig = signal (samplesPerSecond sig) (f $ samples sig)
 
 sinWave :: Double ->
            Int ->

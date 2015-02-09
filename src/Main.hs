@@ -2,11 +2,12 @@ module Main(main) where
 
 import FormantFilter
 import Signal
+import VowelFormants
 import WriteWav
 
 main :: IO ()
 main =
-  let impulseTrain = concat $ replicate 100 [1, -1]
+  let impulseTrain = concat $ replicate 100 [100, 0]
       impSig = signal 8192 impulseTrain
-      filtSig = applyFormantFilter (formant 2200 170) impSig in
-  writeOneChannelWAVEWithDateTime "AltPeriodicImpulse" filtSig
+      filtSig = sequentialFormantFilter aFormants impSig in
+  writeOneChannelWAVEWithDateTime "AltAFilter" filtSig
